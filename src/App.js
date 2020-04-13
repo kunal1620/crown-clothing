@@ -1,6 +1,8 @@
 import React from "react";
-import Homepage from "./pages/homepage/homepage";
 import { Switch, Route } from "react-router-dom";
+
+import Homepage from "./pages/homepage/homepage";
+import ShopPage from "./pages/shop/shop-page";
 
 import "./App.css";
 
@@ -11,7 +13,7 @@ function App() {
     <div>
       <Switch>
         <Route exact path="/" component={Homepage} />
-        <Route path="/hats" component={HatsPage} />
+        <Route path="/shop" component={ShopPage} />
       </Switch>
     </div>
   );
