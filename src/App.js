@@ -5,7 +5,7 @@ import Header from "./components/header/header";
 import Homepage from "./pages/homepage/homepage";
 import ShopPage from "./pages/shop/shop-page";
 import SignInPage from "./pages/sign-in-page/sign-in-page";
-import { auth } from "./firebase/firebase-utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase-utils";
 
 import "./App.css";
 
@@ -21,16 +21,29 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    console.log("App component mounted");
+    // Subscribe to state changes in firebase auth
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // Get document reference object for users from firestore
+        const userRef = await createUserProfileDocument(user);
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+        });
+      } else {
+        // If the user hasn't signed in, set current user to null
+        this.setState({ currentUser: user });
+      }
     });
   }
 
   componentWillUnmount() {
-    console.log("App component will unmount");
+    // Unsubscribe from firebase auth state changes
     this.unsubscribeFromAuth();
   }
 

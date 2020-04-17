@@ -1,4 +1,6 @@
-
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: "Open Sans Condensed";
@@ -9,8 +11,4 @@ body {
 a {
     text-decoration: none;
     color: black;
-}
-
-* {
-    box-sizing: border-box;
 }
